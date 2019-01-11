@@ -6,7 +6,8 @@ This project is fork from [`inconshreveable/log15`](https://github.com/inconshre
 Usage:
 
 ```go
-import log "github.com/inconshreveable/log15"
+import log "github.com/mrFranklin/go-log"
+
 log.Info("this is a pretty log", "key", "hello world")
 
 ```
