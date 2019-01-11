@@ -1,3 +1,22 @@
+This project is fork from [`inconshreveable/log15`](https://github.com/inconshreveable/log15). It provide other new features:
+
+-. display milliseconds for default time format
+-. support `trace` log level
+
+Usage:
+
+```go
+import log "github.com/inconshreveable/log15"
+log.Info("this is a pretty log", "key", "hello world")
+
+```
+then print log:
+```
+TRACE[01-11|19:35:53.097] this is a pretty log                     key="hello world"
+```
+
+---
+
 ![obligatory xkcd](http://imgs.xkcd.com/comics/standards.png)
 
 # log15 [![godoc reference](https://godoc.org/github.com/inconshreveable/log15?status.png)](https://godoc.org/github.com/inconshreveable/log15) [![Build Status](https://travis-ci.org/inconshreveable/log15.svg?branch=master)](https://travis-ci.org/inconshreveable/log15)
