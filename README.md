@@ -15,6 +15,7 @@ then print log:
 ```
 TRACE[01-11|19:35:53.097] this is a pretty log                     key="hello world"
 ```
+![trace log](https://raw.githubusercontent.com/mrFranklin/go-log/master/images/log.png)
 
 ---
 
