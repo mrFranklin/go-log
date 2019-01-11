@@ -13,7 +13,7 @@ import (
 
 const (
 	timeFormat     = "2006-01-02T15:04:05-0700"
-	termTimeFormat = "01-02|15:04:05"
+	termTimeFormat = "01-02|15:04:05.000"
 	floatFormat    = 'f'
 	termMsgJust    = 40
 )
@@ -59,6 +59,8 @@ func TerminalFormat() Format {
 			color = 32
 		case LvlDebug:
 			color = 36
+		case LvlTrace:
+			color = 34
 		}
 
 		b := &bytes.Buffer{}

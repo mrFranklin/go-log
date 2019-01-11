@@ -38,6 +38,8 @@ func sharedSyslog(fmtr Format, sysWr *syslog.Writer, err error) (Handler, error)
 			syslogFn = sysWr.Info
 		case LvlDebug:
 			syslogFn = sysWr.Debug
+		case LvlTrace:
+			syslogFn = sysWr.Debug
 		}
 
 		s := strings.TrimSpace(string(fmtr.Format(r)))

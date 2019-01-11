@@ -22,6 +22,7 @@ const (
 	LvlWarn
 	LvlInfo
 	LvlDebug
+	LvlTrace
 )
 
 // Returns the name of a Lvl
@@ -37,6 +38,8 @@ func (l Lvl) String() string {
 		return "eror"
 	case LvlCrit:
 		return "crit"
+	case LvlTrace:
+		return "trace"
 	default:
 		panic("bad level")
 	}
@@ -56,6 +59,8 @@ func LvlFromString(lvlString string) (Lvl, error) {
 		return LvlError, nil
 	case "crit":
 		return LvlCrit, nil
+	case "trace":
+		return LvlTrace, nil
 	default:
 		return LvlDebug, fmt.Errorf("Unknown level: %v", lvlString)
 	}
@@ -149,6 +154,10 @@ func (l *logger) Error(msg string, ctx ...interface{}) {
 
 func (l *logger) Crit(msg string, ctx ...interface{}) {
 	l.write(msg, LvlCrit, ctx)
+}
+
+func (l *logger) Trace(msg string, ctx ...interface{}) {
+	l.write(msg, LvlTrace, ctx)
 }
 
 func (l *logger) GetHandler() Handler {

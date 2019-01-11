@@ -66,3 +66,7 @@ func Error(msg string, ctx ...interface{}) {
 func Crit(msg string, ctx ...interface{}) {
 	root.write(msg, LvlCrit, ctx)
 }
+
+func Trace(msg string, ctx ...interface{}) {
+	root.write(msg, LvlTrace, ctx)
+}
