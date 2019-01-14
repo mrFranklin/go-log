@@ -2,11 +2,12 @@ This project is fork from [`inconshreveable/log15`](https://github.com/inconshre
 
 - display time in the format of milliseconds for default
 - support `trace` log level
+- using package name with `log` instead of `log15`
 
 Usage:
 
 ```go
-import log "github.com/mrFranklin/go-log"
+import "github.com/mrFranklin/go-log"
 
 log.Info("this is a pretty log", "key", "hello world")
 
@@ -23,7 +24,7 @@ TRACE[01-11|19:35:53.097] this is a pretty log                     key="hello wo
 
 # log15 [![godoc reference](https://godoc.org/github.com/inconshreveable/log15?status.png)](https://godoc.org/github.com/inconshreveable/log15) [![Build Status](https://travis-ci.org/inconshreveable/log15.svg?branch=master)](https://travis-ci.org/inconshreveable/log15)
 
-Package log15 provides an opinionated, simple toolkit for best-practice logging in Go (golang) that is both human and machine readable. It is modeled after the Go standard library's [`io`](http://golang.org/pkg/io/) and [`net/http`](http://golang.org/pkg/net/http/) packages and is an alternative to the standard library's [`log`](http://golang.org/pkg/log/) package.
+package log provides an opinionated, simple toolkit for best-practice logging in Go (golang) that is both human and machine readable. It is modeled after the Go standard library's [`io`](http://golang.org/pkg/io/) and [`net/http`](http://golang.org/pkg/net/http/) packages and is an alternative to the standard library's [`log`](http://golang.org/pkg/log/) package.
 
 ## Features
 - A simple, easy-to-understand API
