@@ -3,6 +3,7 @@ This project is fork from [`inconshreveable/log15`](https://github.com/inconshre
 - display time in the format of milliseconds for default
 - support `trace` log level
 - using package name with `log` instead of `log15`
+- program exit when call `log.Crit()`
 
 Usage:
 
