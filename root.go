@@ -65,6 +65,7 @@ func Error(msg string, ctx ...interface{}) {
 // Crit is a convenient alias for Root().Crit
 func Crit(msg string, ctx ...interface{}) {
 	root.write(msg, LvlCrit, ctx)
+	os.Exit(1)
 }
 
 func Trace(msg string, ctx ...interface{}) {
