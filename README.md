@@ -1,4 +1,4 @@
-This project is fork from [`inconshreveable/log15`](https://github.com/inconshreveable/log15). It provides some new features:
+This project is fork from [`inconshreveable/log15`](https://github.com/inconshreveable/log15). And provides some new features:
 
 - display time in the format of milliseconds for default
 - support `trace` log level
