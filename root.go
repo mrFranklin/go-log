@@ -23,7 +23,8 @@ func init() {
 		StderrHandler = StreamHandler(colorable.NewColorableStderr(), TerminalFormat())
 	}
 
-	root = &logger{[]interface{}{}, new(swapHandler)}
+	root = &logger{ctx: []interface{}{}, h: new(swapHandler)}
+	root.printFilePath.Store(&filePathIndicator{false, ""})
 	root.SetHandler(StdoutHandler)
 }
 
@@ -70,4 +71,12 @@ func Crit(msg string, ctx ...interface{}) {
 
 func Trace(msg string, ctx ...interface{}) {
 	root.write(msg, LvlTrace, ctx)
+}
+
+func EnablePrintFilePath(skipPrefix string) {
+	root.EnablePrintFilePath(skipPrefix)
+}
+
+func DisablePrintFilePath() {
+	root.DisablePrintFilePath()
 }

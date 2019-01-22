@@ -65,15 +65,33 @@ func TerminalFormat() Format {
 
 		b := &bytes.Buffer{}
 		lvl := strings.ToUpper(r.Lvl.String())
-		if color > 0 {
-			fmt.Fprintf(b, "\x1b[%dm%s\x1b[0m[%s] %s ", color, lvl, r.Time.Format(termTimeFormat), r.Msg)
+		if r.EnablePrintFilepath {
+			fp := fmt.Sprintf("%+v", r.Call)
+			if r.SkipPrefix != "" {
+				fp = strings.TrimPrefix(fp, r.SkipPrefix)
+				fp = strings.TrimPrefix(fp, "/")
+			}
+			if color > 0 {
+				fmt.Fprintf(b, "\x1b[%dm%s\x1b[0m[%s][%s] %s", color, lvl, r.Time.Format(termTimeFormat), fp, r.Msg)
+			} else {
+				fmt.Fprintf(b, "[%s] [%s] [%s] %s", lvl, r.Time.Format(termTimeFormat), fp, r.Msg)
+			}
+			// try to justify the log output for short messages
+			msgJust := termMsgJust + 20
+			l := len(fp) + len(r.Msg)
+			if len(r.Ctx) > 0 && l < msgJust {
+				b.Write(bytes.Repeat([]byte{' '}, msgJust-l))
+			}
 		} else {
-			fmt.Fprintf(b, "[%s] [%s] %s ", lvl, r.Time.Format(termTimeFormat), r.Msg)
-		}
-
-		// try to justify the log output for short messages
-		if len(r.Ctx) > 0 && len(r.Msg) < termMsgJust {
-			b.Write(bytes.Repeat([]byte{' '}, termMsgJust-len(r.Msg)))
+			if color > 0 {
+				fmt.Fprintf(b, "\x1b[%dm%s\x1b[0m[%s] %s", color, lvl, r.Time.Format(termTimeFormat), r.Msg)
+			} else {
+				fmt.Fprintf(b, "[%s] [%s] %s", lvl, r.Time.Format(termTimeFormat), r.Msg)
+			}
+			// try to justify the log output for short messages
+			if len(r.Ctx) > 0 && len(r.Msg) < termMsgJust {
+				b.Write(bytes.Repeat([]byte{' '}, termMsgJust-len(r.Msg)))
+			}
 		}
 
 		// print the keys logfmt style

@@ -4,20 +4,41 @@ This project is fork from [`inconshreveable/log15`](https://github.com/inconshre
 - support `trace` log level
 - using package name with `log` instead of `log15`
 - program exit when call `log.Crit()`
+- support to print the file path and the number of line where the log is located, using `log.EnablePrintFilePath()`  
 
 Usage:
 
+- print a `trace level` log
 ```go
 import "github.com/mrFranklin/go-log"
 
-log.Info("this is a pretty log", "key", "hello world")
+log.Trace("this is a pretty log", "key", "hello world")
 
 ```
-then print log:
+output:
 ```
 TRACE[01-11|19:35:53.097] this is a pretty log                     key="hello world"
 ```
+
 ![trace log](https://raw.githubusercontent.com/mrFranklin/go-log/master/images/log.png)
+
+
+- print the file path and the number of line:
+```
+func init() {
+	log.EnablePrintFilePath("github.com/mrFranklin/go-log")
+}
+
+func main() {
+    log.Info("this is a pretty log", "key", "hello world")
+}
+
+```
+output:
+```
+INFO[01-22|16:14:42.847][samples/main.go:23] this is a pretty log               key="hello world"
+```
+
 
 ---
 

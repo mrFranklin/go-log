@@ -2,6 +2,7 @@ package log
 
 import (
 	"fmt"
+	"sync/atomic"
 	"time"
 
 	"github.com/go-stack/stack"
@@ -68,12 +69,14 @@ func LvlFromString(lvlString string) (Lvl, error) {
 
 // A Record is what a Logger asks its handler to write
 type Record struct {
-	Time     time.Time
-	Lvl      Lvl
-	Msg      string
-	Ctx      []interface{}
-	Call     stack.Call
-	KeyNames RecordKeyNames
+	Time                time.Time
+	Lvl                 Lvl
+	Msg                 string
+	Ctx                 []interface{}
+	Call                stack.Call
+	KeyNames            RecordKeyNames
+	EnablePrintFilepath bool
+	SkipPrefix          string
 }
 
 // RecordKeyNames are the predefined names of the log props used by the Logger interface.
@@ -103,11 +106,18 @@ type Logger interface {
 }
 
 type logger struct {
-	ctx []interface{}
-	h   *swapHandler
+	ctx           []interface{}
+	h             *swapHandler
+	printFilePath atomic.Value
+}
+
+type filePathIndicator struct {
+	enable     bool   // enable print the file path or not
+	skipPrefix string // the file path skipped prefix
 }
 
 func (l *logger) write(msg string, lvl Lvl, ctx []interface{}) {
+	fi := l.printFilePath.Load().(*filePathIndicator)
 	l.h.Log(&Record{
 		Time: time.Now(),
 		Lvl:  lvl,
@@ -119,11 +129,14 @@ func (l *logger) write(msg string, lvl Lvl, ctx []interface{}) {
 			Msg:  msgKey,
 			Lvl:  lvlKey,
 		},
+		EnablePrintFilepath: fi.enable,
+		SkipPrefix:          fi.skipPrefix,
 	})
 }
 
 func (l *logger) New(ctx ...interface{}) Logger {
-	child := &logger{newContext(l.ctx, ctx), new(swapHandler)}
+	child := &logger{ctx: newContext(l.ctx, ctx), h: new(swapHandler)}
+	child.printFilePath.Store(&filePathIndicator{false, ""})
 	child.SetHandler(l.h)
 	return child
 }
@@ -166,6 +179,14 @@ func (l *logger) GetHandler() Handler {
 
 func (l *logger) SetHandler(h Handler) {
 	l.h.Swap(h)
+}
+
+func (l *logger) EnablePrintFilePath(skipPrefix string) {
+	l.printFilePath.Store(&filePathIndicator{true, skipPrefix})
+}
+
+func (l *logger) DisablePrintFilePath() {
+	l.printFilePath.Store(&filePathIndicator{enable: false})
 }
 
 func normalize(ctx []interface{}) []interface{} {
